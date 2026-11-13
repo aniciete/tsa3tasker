@@ -12,7 +12,7 @@ REMOTE_HTDOCS="htdocs"
 ZIP_NAME="tsa3tasker-infinityfree.zip"
 ZIP_PATH="$DIR/$ZIP_NAME"
 EXTRACT_PHP="$DIR/extract.php"
-APP_URL="${APP_URL:-http://tsa3.freedev.app}"
+APP_URL="${APP_URL:-https://tsa3.freedev.app}"
 
 if [ -z "$FTP_PASS" ]; then
     echo "Error: FTP_PASS environment variable is required (e.g. FTP_PASS=... ./deploy-infinityfree.sh)." >&2

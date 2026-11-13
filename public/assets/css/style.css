@@ -415,7 +415,6 @@ body {
 
 .about-body {
     padding: 24px 20px;
-    max-width: 68ch;
 }
 
 .about-body + .definition-list {
@@ -436,6 +435,7 @@ body {
 }
 
 .about-prose {
+    max-width: 68ch;
     color: var(--ink-secondary);
     font-size: 0.9375rem;
     line-height: 1.65;

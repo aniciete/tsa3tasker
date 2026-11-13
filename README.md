@@ -2,7 +2,7 @@
 
 **Tasker** is the Laravel 13 Eloquent ORM implementation of the **Tasks for Today Management System** for **IT0049 (Technical Summative Assessment 3 — TSA3)** by **Charles Lawrence Aniciete**. It reproduces the schema, sample dataset, and page routes of [tsa1tasker](https://github.com/aniciete/tsa1tasker) using Laravel migrations, seeders, backed enums, and Eloquent local query scopes.
 
-- **Live Deployment**: [http://tsa3.freedev.app](http://tsa3.freedev.app)
+- **Live Deployment**: [https://tsa3.freedev.app](https://tsa3.freedev.app)
 
 ---
 
@@ -74,7 +74,7 @@ php artisan test
 
 ## Shared Hosting Deployment (InfinityFree)
 
-- **Target Domain**: [http://tsa3.freedev.app](http://tsa3.freedev.app)
+- **Target Domain**: [https://tsa3.freedev.app](https://tsa3.freedev.app)
 - **Database Host**: `sql105.infinityfree.com` (`if0_43431425_tsa3`)
 
 1. Copy `env.production.example` to `env.production`, set `APP_KEY` (`php artisan key:generate --show`), and set your InfinityFree MySQL password (`DB_PASSWORD`).

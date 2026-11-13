@@ -66,8 +66,9 @@ composer install --no-dev --optimize-autoloader --no-interaction --quiet
 zip -r "$OUTPUT_ZIP" . -x "*.DS_Store" > /dev/null
 
 echo "==> Verifying package contents..."
+ZIP_LISTING="$(unzip -l "$OUTPUT_ZIP")"
 for req in "public/index.php" "index.php" ".htaccess" "public/.htaccess" "artisan" "vendor/autoload.php" "public/assets/css/style.css" "assets/css/style.css" ".env" "database/schema_export.sql" "database/database.sqlite"; do
-    if ! unzip -l "$OUTPUT_ZIP" | grep -q "$req"; then
+    if ! grep -Fq "$req" <<< "$ZIP_LISTING"; then
         echo "Error: Required file $req is missing from $OUTPUT_ZIP" >&2
         exit 1
     fi

@@ -15,9 +15,9 @@ class ProfileController extends Controller
         $user = User::query()->orderBy('id')->first();
 
         return view('profile', [
-            'title'      => 'Profile | Tasker',
+            'title' => 'Profile | Tasker',
             'activePage' => 'profile',
-            'user'       => $user,
+            'user' => $user,
         ]);
     }
 }

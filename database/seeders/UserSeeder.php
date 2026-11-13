@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             ['username' => 'charles'],
             [
                 'full_name' => 'Charles Lawrence Aniciete',
-                'email'     => 'charles@example.com',
+                'email' => 'charles@example.com',
             ]
         );
     }

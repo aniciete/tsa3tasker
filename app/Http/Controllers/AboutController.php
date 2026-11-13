@@ -12,7 +12,7 @@ class AboutController extends Controller
     public function index(): View
     {
         return view('about', [
-            'title'      => 'About | Tasker',
+            'title' => 'About | Tasker',
             'activePage' => 'about',
         ]);
     }

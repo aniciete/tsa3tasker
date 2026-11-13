@@ -15,9 +15,9 @@ class TaskController extends Controller
         $tasks = Task::orderedByDate()->get();
 
         return view('tasks', [
-            'title'      => 'All Tasks | Tasker',
+            'title' => 'All Tasks | Tasker',
             'activePage' => 'tasks',
-            'tasks'      => $tasks,
+            'tasks' => $tasks,
         ]);
     }
 }

@@ -15,10 +15,10 @@ class WelcomeController extends Controller
         $tasks = Task::forToday()->orderBy('id')->get();
 
         return view('welcome', [
-            'title'      => 'Welcome to Tasker',
+            'title' => 'Welcome to Tasker',
             'activePage' => 'welcome',
-            'todayDate'  => now()->format('F j, Y'),
-            'tasks'      => $tasks,
+            'todayDate' => now()->format('F j, Y'),
+            'tasks' => $tasks,
         ]);
     }
 }

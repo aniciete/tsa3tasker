@@ -28,7 +28,7 @@ class TaskerTest extends TestCase
     public function test_user_username_is_unique_and_task_status_defaults_to_pending(): void
     {
         $task = Task::query()->create([
-            'title'     => 'Verify default status migration constraint',
+            'title' => 'Verify default status migration constraint',
             'task_date' => now()->toDateString(),
         ]);
 
@@ -36,17 +36,17 @@ class TaskerTest extends TestCase
         $this->assertSame(Task::STATUS_PENDING, $freshTask->status);
 
         User::query()->create([
-            'username'  => 'charles',
+            'username' => 'charles',
             'full_name' => 'Charles Lawrence Aniciete',
-            'email'     => 'charles@example.com',
+            'email' => 'charles@example.com',
         ]);
 
         $this->expectException(QueryException::class);
 
         User::query()->create([
-            'username'  => 'charles',
+            'username' => 'charles',
             'full_name' => 'Duplicate Username',
-            'email'     => 'duplicate@example.com',
+            'email' => 'duplicate@example.com',
         ]);
     }
 
@@ -68,8 +68,8 @@ class TaskerTest extends TestCase
     public function test_welcome_page_displays_empty_state_when_no_tasks_for_today(): void
     {
         Task::query()->create([
-            'title'     => 'Yesterday finished item',
-            'status'    => Task::STATUS_COMPLETED,
+            'title' => 'Yesterday finished item',
+            'status' => Task::STATUS_COMPLETED,
             'task_date' => now()->subDay()->toDateString(),
         ]);
 

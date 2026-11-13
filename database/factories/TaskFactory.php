@@ -18,8 +18,8 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'     => fake()->sentence(4),
-            'status'    => Task::STATUS_PENDING,
+            'title' => fake()->sentence(4),
+            'status' => Task::STATUS_PENDING,
             'task_date' => now()->toDateString(),
         ];
     }

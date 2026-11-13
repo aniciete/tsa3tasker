@@ -16,53 +16,53 @@ class TaskSeeder extends Seeder
 
         $tasks = [
             [
-                'title'     => 'Buy groceries (milk, eggs, and bread)',
-                'status'    => Task::STATUS_PENDING,
+                'title' => 'Buy groceries (milk, eggs, and bread)',
+                'status' => Task::STATUS_PENDING,
                 'task_date' => $today->toDateString(),
             ],
             [
-                'title'     => 'Morning 30-minute jog in the park',
-                'status'    => Task::STATUS_COMPLETED,
+                'title' => 'Morning 30-minute jog in the park',
+                'status' => Task::STATUS_COMPLETED,
                 'task_date' => $today->toDateString(),
             ],
             [
-                'title'     => 'Water the indoor plants',
-                'status'    => Task::STATUS_COMPLETED,
+                'title' => 'Water the indoor plants',
+                'status' => Task::STATUS_COMPLETED,
                 'task_date' => $today->toDateString(),
             ],
             [
-                'title'     => 'Prepare dinner and wash the dishes',
-                'status'    => Task::STATUS_PENDING,
+                'title' => 'Prepare dinner and wash the dishes',
+                'status' => Task::STATUS_PENDING,
                 'task_date' => $today->toDateString(),
             ],
             [
-                'title'     => 'Do laundry and fold clothes',
-                'status'    => Task::STATUS_COMPLETED,
+                'title' => 'Do laundry and fold clothes',
+                'status' => Task::STATUS_COMPLETED,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
-                'title'     => 'Take out the trash and recycling bins',
-                'status'    => Task::STATUS_COMPLETED,
+                'title' => 'Take out the trash and recycling bins',
+                'status' => Task::STATUS_COMPLETED,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
-                'title'     => 'Clean the kitchen counters and vacuum living room',
-                'status'    => Task::STATUS_COMPLETED,
+                'title' => 'Clean the kitchen counters and vacuum living room',
+                'status' => Task::STATUS_COMPLETED,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
-                'title'     => 'Pay monthly electric and water bills',
-                'status'    => Task::STATUS_PENDING,
+                'title' => 'Pay monthly electric and water bills',
+                'status' => Task::STATUS_PENDING,
                 'task_date' => $today->copy()->addDay()->toDateString(),
             ],
             [
-                'title'     => 'Schedule dentist checkup appointment',
-                'status'    => Task::STATUS_PENDING,
+                'title' => 'Schedule dentist checkup appointment',
+                'status' => Task::STATUS_PENDING,
                 'task_date' => $today->copy()->addDay()->toDateString(),
             ],
             [
-                'title'     => 'Wash the car and check tire pressure',
-                'status'    => Task::STATUS_PENDING,
+                'title' => 'Wash the car and check tire pressure',
+                'status' => Task::STATUS_PENDING,
                 'task_date' => $today->copy()->addDays(2)->toDateString(),
             ],
         ];
@@ -70,7 +70,7 @@ class TaskSeeder extends Seeder
         foreach ($tasks as $task) {
             Task::query()->updateOrCreate(
                 [
-                    'title'     => $task['title'],
+                    'title' => $task['title'],
                     'task_date' => $task['task_date'],
                 ],
                 [

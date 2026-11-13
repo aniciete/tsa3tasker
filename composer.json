@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "aniciete/tsa3tasker",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "IT0049 TSA3 - Tasks for Today Management System (Laravel)",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {

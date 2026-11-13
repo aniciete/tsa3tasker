@@ -1,0 +1,41 @@
+# ====================================================================
+# IT0049 TSA3 (Tasker) — Root Shared Hosting .htaccess (InfinityFree)
+# ====================================================================
+
+Options -Indexes
+Options +FollowSymlinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct web access to environment, config, git, and database files
+    RewriteRule ^(\.env|env\.production(\.example)?|\.git|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|storage/.*|database/.*) - [F,L,NC]
+
+    # Forward Authorization header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect trailing slashes if not a directory
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Serve existing root-level static files or directories directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Map static requests into public/ when present (assets, favicon, robots)
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Front controller fallback for all application routes
+    RewriteRule ^(.*)$ public/index.php [L,QSA]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 /public/index.php
+</IfModule>
+
+ServerSignature Off

@@ -1,8 +1,11 @@
 *.log
+*.zip
 .DS_Store
 .env
 .env.backup
 .env.production
+env.production
+extract.php
 .phpactor.json
 .phpunit.result.cache
 /.idea
@@ -22,6 +25,7 @@
 _ide_helper.php
 Homestead.json
 Homestead.yaml
+*.sqlite
 Thumbs.db
 
 *.zip

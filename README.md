@@ -1,58 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tasker — Tasks for Today Management System (Laravel 13)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Tasker** is the Laravel 13 Eloquent ORM implementation of the **Tasks for Today Management System** for **IT0049 (Technical Summative Assessment 3 — TSA3)** by **Charles Lawrence Aniciete**. It reproduces the schema, sample dataset, and page routes of [tsa1tasker](https://github.com/aniciete/tsa1tasker) using Laravel migrations, seeders, backed enums, and Eloquent local query scopes.
 
-## About Laravel
+- **Live Deployment**: [http://tsa3.freedev.app](http://tsa3.freedev.app)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features & Routes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Route | Controller Action | Purpose |
+| :--- | :--- | :--- |
+| `/` | `WelcomeController@index` | Queries `Task::forToday()` (`Asia/Manila`) to display today's scheduled tasks and status counts. |
+| `/tasks` | `TaskController@index` | Queries `Task::orderedByDate()` to list all seeded tasks chronologically by `task_date`. |
+| `/profile` | `ProfileController@index` | Queries `User::query()->first()` to display the registered user record. |
+| `/about` | `AboutController@index` | Static page identifying **Charles Lawrence Aniciete** and the Eloquent architecture. |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture & Database Schema
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Migrations
+- **`users`** (`database/migrations/0001_01_01_000000_create_users_table.php`):
+  - `id` (primary key), `username` (`VARCHAR(50)`, unique), `full_name` (`VARCHAR(100)`), `email` (`VARCHAR(100)`), and `timestamps()`.
+- **`tasks`** (`database/migrations/2026_11_13_000001_create_tasks_table.php`):
+  - `id` (primary key), `title` (`VARCHAR(150)`), `status` (`VARCHAR(20)`, default `'pending'`), `task_date` (`DATE`), and `timestamps()`.
+- A MySQL SQL export (`database/schema_export.sql`) with `SET time_zone = '+08:00'` is included for phpMyAdmin or shared-hosting provisioning.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Eloquent Models & Query Scopes
+- `App\Models\Task`: casts `status` to `App\Enums\TaskStatus` (`pending`, `completed`) and `task_date` to `date`, and defines Laravel 13 `#[Scope]` local scopes:
+  - `forToday(Builder $query): void`
+  - `orderedByDate(Builder $query): void`
+- `App\Models\User`: exposes `#[Fillable(['username', 'full_name', 'email'])]`.
 
-## Agentic Development
+### Seeders
+- `Database\Seeders\UserSeeder`: seeds 1 canonical user (`charles`, `Charles Lawrence Aniciete`, `charles@example.com`).
+- `Database\Seeders\TaskSeeder`: seeds 10 sample tasks spanning 4 distinct dates (yesterday, today, tomorrow, and +2 days).
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## Local Setup & Running
+
+### Prerequisites
+- PHP `^8.3` with PDO SQLite/MySQL extensions
+- Composer `^2.x`
+
+### Steps
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/aniciete/tsa3tasker.git
+cd tsa3tasker
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Then open [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Verification & Quality Checks
 
-## Code of Conduct
+```bash
+# Run PHPUnit feature & model tests
+php artisan test
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Verify Laravel Pint formatting rules
+./vendor/bin/pint --test
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Shared Hosting Deployment (InfinityFree)
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Copy `env.production.example` to `env.production`, set `APP_KEY` (`php artisan key:generate --show`) and your InfinityFree MySQL password (`DB_PASSWORD`).
+2. Run `./build-infinityfree-zip.sh` to assemble `tsa3tasker-infinityfree.zip` with `vendor/` (`--no-dev`), `.htaccess`, root `index.php`, mirrored `assets/`, and `database/schema_export.sql`.
+3. Provide `extract.php` and deploy via FTP:
+   ```bash
+   FTP_PASS="<your-vpanel-password>" ./deploy-infinityfree.sh
+   ```

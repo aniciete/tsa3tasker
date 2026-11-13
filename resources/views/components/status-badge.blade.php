@@ -1,8 +1,8 @@
-@props(['status' => 'pending'])
+@props(['status' => \App\Enums\TaskStatus::Pending])
 
 @php
-    $normalized = strtolower((string) $status);
-    $isCompleted = $normalized === \App\Models\Task::STATUS_COMPLETED;
+    $value = $status instanceof \App\Enums\TaskStatus ? $status->value : strtolower((string) $status);
+    $isCompleted = $value === \App\Enums\TaskStatus::Completed->value;
 @endphp
 
 <span class="status-badge {{ $isCompleted ? 'status-completed' : 'status-pending' }}">
@@ -16,5 +16,5 @@
             <path d="M8 5.25V8.25L10 9.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     @endif
-    <span>{{ $normalized }}</span>
+    <span>{{ $value }}</span>
 </span>

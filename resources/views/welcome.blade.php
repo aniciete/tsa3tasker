@@ -3,7 +3,7 @@
 @section('content')
 @php
     $totalToday = $tasks->count();
-    $completedToday = $tasks->where('status', \App\Models\Task::STATUS_COMPLETED)->count();
+    $completedToday = $tasks->where('status', \App\Enums\TaskStatus::Completed)->count();
     $pendingToday = $totalToday - $completedToday;
 @endphp
 

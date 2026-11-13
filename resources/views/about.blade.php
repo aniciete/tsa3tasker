@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <dl class="definition-list">
+        <dl class="definition-list" aria-label="Application metadata">
             <div class="definition-row">
                 <dt class="definition-term">Developer</dt>
                 <dd class="definition-value">Charles Lawrence Aniciete</dd>

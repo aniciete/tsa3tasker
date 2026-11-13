@@ -13,7 +13,7 @@
 
     <div class="surface-panel">
         @if ($user)
-            <dl class="definition-list">
+            <dl class="definition-list" aria-label="User profile details">
                 <div class="definition-row">
                     <dt class="definition-term">User ID</dt>
                     <dd class="definition-value definition-mono">#{{ $user->id }}</dd>
@@ -39,10 +39,11 @@
             </dl>
         @else
             <div class="empty-state">
-                <p class="empty-title">No user profile record found.</p>
+                <p class="empty-title">No user profile is currently available.</p>
                 <p class="empty-copy">
-                    Seed the database using <code class="inline-code">php artisan db:seed</code> to populate the profile record.
+                    Account details will display here once a profile record exists.
                 </p>
+                <a href="{{ route('welcome') }}" class="text-link">Go to today&rsquo;s tasks</a>
             </div>
         @endif
     </div>

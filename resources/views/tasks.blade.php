@@ -28,9 +28,9 @@
                 <tbody>
                     @foreach ($tasks as $task)
                         <tr>
-                            <td class="col-id">#{{ $task->id }}</td>
-                            <td class="task-title">{{ $task->title }}</td>
-                            <td class="col-date">
+                            <td class="col-id" data-label="ID">#{{ $task->id }}</td>
+                            <td class="task-title" data-label="Task">{{ $task->title }}</td>
+                            <td class="col-date" data-label="Scheduled Date">
                                 <time datetime="{{ $task->task_date->toDateString() }}" class="mono-date">
                                     {{ $task->task_date->toDateString() }}
                                 </time>
@@ -38,7 +38,7 @@
                                     <span class="date-marker">(Today)</span>
                                 @endif
                             </td>
-                            <td class="col-status">
+                            <td class="col-status" data-label="Status">
                                 <x-status-badge :status="$task->status" />
                             </td>
                         </tr>
@@ -47,10 +47,11 @@
             </table>
         @else
             <div class="empty-state">
-                <p class="empty-title">No tasks found.</p>
+                <p class="empty-title">No tasks are currently recorded.</p>
                 <p class="empty-copy">
-                    Run database migrations and seeders to populate the task list.
+                    Scheduled tasks will appear here chronologically once added.
                 </p>
+                <a href="{{ route('welcome') }}" class="text-link">Return to today&rsquo;s tasks</a>
             </div>
         @endif
     </div>

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use Illuminate\Database\Seeder;
 
@@ -17,52 +18,52 @@ class TaskSeeder extends Seeder
         $tasks = [
             [
                 'title' => 'Buy groceries (milk, eggs, and bread)',
-                'status' => Task::STATUS_PENDING,
+                'status' => TaskStatus::Pending,
                 'task_date' => $today->toDateString(),
             ],
             [
                 'title' => 'Morning 30-minute jog in the park',
-                'status' => Task::STATUS_COMPLETED,
+                'status' => TaskStatus::Completed,
                 'task_date' => $today->toDateString(),
             ],
             [
                 'title' => 'Water the indoor plants',
-                'status' => Task::STATUS_COMPLETED,
+                'status' => TaskStatus::Completed,
                 'task_date' => $today->toDateString(),
             ],
             [
                 'title' => 'Prepare dinner and wash the dishes',
-                'status' => Task::STATUS_PENDING,
+                'status' => TaskStatus::Pending,
                 'task_date' => $today->toDateString(),
             ],
             [
                 'title' => 'Do laundry and fold clothes',
-                'status' => Task::STATUS_COMPLETED,
+                'status' => TaskStatus::Completed,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
                 'title' => 'Take out the trash and recycling bins',
-                'status' => Task::STATUS_COMPLETED,
+                'status' => TaskStatus::Completed,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
                 'title' => 'Clean the kitchen counters and vacuum living room',
-                'status' => Task::STATUS_COMPLETED,
+                'status' => TaskStatus::Completed,
                 'task_date' => $today->copy()->subDay()->toDateString(),
             ],
             [
                 'title' => 'Pay monthly electric and water bills',
-                'status' => Task::STATUS_PENDING,
+                'status' => TaskStatus::Pending,
                 'task_date' => $today->copy()->addDay()->toDateString(),
             ],
             [
                 'title' => 'Schedule dentist checkup appointment',
-                'status' => Task::STATUS_PENDING,
+                'status' => TaskStatus::Pending,
                 'task_date' => $today->copy()->addDay()->toDateString(),
             ],
             [
                 'title' => 'Wash the car and check tire pressure',
-                'status' => Task::STATUS_PENDING,
+                'status' => TaskStatus::Pending,
                 'task_date' => $today->copy()->addDays(2)->toDateString(),
             ],
         ];

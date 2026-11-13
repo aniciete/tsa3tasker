@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Database\Factories\TaskFactory;
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,12 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['title', 'status', 'task_date'])]
 class Task extends Model
 {
-    /** @use HasFactory<TaskFactory> */
-    use HasFactory;
-
-    public const STATUS_PENDING = 'pending';
-
-    public const STATUS_COMPLETED = 'completed';
+    protected $table = 'tasks';
 
     /**
      * Get the attributes that should be cast.
@@ -30,6 +24,7 @@ class Task extends Model
     protected function casts(): array
     {
         return [
+            'status' => TaskStatus::class,
             'task_date' => 'date',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',

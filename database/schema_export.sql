@@ -4,6 +4,9 @@
 -- File: database/schema_export.sql
 -- ====================================================================
 
+SET NAMES utf8mb4;
+SET time_zone = '+08:00';
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,

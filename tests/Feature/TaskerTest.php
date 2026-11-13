@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -25,6 +26,26 @@ class TaskerTest extends TestCase
         $this->assertGreaterThanOrEqual(1, Task::forToday()->count());
     }
 
+    public function test_eloquent_task_scopes_filter_today_and_order_chronologically(): void
+    {
+        $this->seed();
+
+        $todayTasks = Task::forToday()->get();
+        $this->assertCount(4, $todayTasks);
+        $this->assertTrue(
+            $todayTasks->every(fn (Task $task): bool => $task->task_date->toDateString() === now()->toDateString())
+        );
+
+        $orderedTasks = Task::orderedByDate()->get();
+        $dates = $orderedTasks->map(fn (Task $task): string => $task->task_date->toDateString())->values()->all();
+        $sortedDates = $dates;
+        sort($sortedDates);
+
+        $this->assertSame($sortedDates, $dates);
+        $this->assertSame(TaskStatus::Pending, $orderedTasks->firstWhere('title', 'Buy groceries (milk, eggs, and bread)')->status);
+        $this->assertSame(TaskStatus::Completed, $orderedTasks->firstWhere('title', 'Morning 30-minute jog in the park')->status);
+    }
+
     public function test_user_username_is_unique_and_task_status_defaults_to_pending(): void
     {
         $task = Task::query()->create([
@@ -33,7 +54,7 @@ class TaskerTest extends TestCase
         ]);
 
         $freshTask = Task::query()->findOrFail($task->id);
-        $this->assertSame(Task::STATUS_PENDING, $freshTask->status);
+        $this->assertSame(TaskStatus::Pending, $freshTask->status);
 
         User::query()->create([
             'username' => 'charles',
@@ -69,7 +90,7 @@ class TaskerTest extends TestCase
     {
         Task::query()->create([
             'title' => 'Yesterday finished item',
-            'status' => Task::STATUS_COMPLETED,
+            'status' => TaskStatus::Completed,
             'task_date' => now()->subDay()->toDateString(),
         ]);
 
@@ -100,7 +121,7 @@ class TaskerTest extends TestCase
     {
         $emptyResponse = $this->get(route('profile.index'));
         $emptyResponse->assertOk();
-        $emptyResponse->assertSee('No user profile record found.');
+        $emptyResponse->assertSee('No user profile is currently available.');
 
         $this->seed();
 

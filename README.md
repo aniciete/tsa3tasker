@@ -12,7 +12,7 @@
 | :--- | :--- | :--- |
 | `/` | `WelcomeController@index` | Queries `Task::forToday()` (`Asia/Manila`) to display today's scheduled tasks and status counts. |
 | `/tasks` | `TaskController@index` | Queries `Task::orderedByDate()` to list all seeded tasks chronologically by `task_date`. |
-| `/profile` | `ProfileController@index` | Queries `User::query()->first()` to display the registered user record. |
+| `/profile` | `ProfileController@index` | Queries `User::query()->orderBy('id')->first()` to display the registered user record. |
 | `/about` | `AboutController@index` | Static page identifying **Charles Lawrence Aniciete** and the Eloquent architecture. |
 
 ---
@@ -74,9 +74,12 @@ php artisan test
 
 ## Shared Hosting Deployment (InfinityFree)
 
-1. Copy `env.production.example` to `env.production`, set `APP_KEY` (`php artisan key:generate --show`) and your InfinityFree MySQL password (`DB_PASSWORD`).
-2. Run `./build-infinityfree-zip.sh` to assemble `tsa3tasker-infinityfree.zip` with `vendor/` (`--no-dev`), `.htaccess`, root `index.php`, mirrored `assets/`, and `database/schema_export.sql`.
-3. Provide `extract.php` and deploy via FTP:
+- **Target Domain**: [http://tsa3.freedev.app](http://tsa3.freedev.app)
+- **Database Host**: `sql105.infinityfree.com` (`if0_43431425_tsa3`)
+
+1. Copy `env.production.example` to `env.production`, set `APP_KEY` (`php artisan key:generate --show`), and set your InfinityFree MySQL password (`DB_PASSWORD`).
+2. Run `./build-infinityfree-zip.sh` to assemble `tsa3tasker-infinityfree.zip` with `vendor/` (`--no-dev`), `.htaccess`, root `index.php`, mirrored `assets/`, pre-migrated SQLite fallback, and `database/schema_export.sql`.
+3. Deploy via FTP (`extract.php` automatically unpacks the archive, reads credentials from `.env` to import `database/schema_export.sql`, and removes itself):
    ```bash
    FTP_PASS="<your-vpanel-password>" ./deploy-infinityfree.sh
    ```

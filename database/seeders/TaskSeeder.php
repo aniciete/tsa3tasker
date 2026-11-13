@@ -69,7 +69,7 @@ class TaskSeeder extends Seeder
         ];
 
         foreach ($tasks as $task) {
-            Task::query()->updateOrCreate(
+            Task::query()->firstOrCreate(
                 [
                     'title' => $task['title'],
                     'task_date' => $task['task_date'],

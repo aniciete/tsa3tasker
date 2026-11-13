@@ -2,7 +2,9 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TMP_DIR="/tmp/tsa3-deploy-$$"
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
 OUTPUT_ZIP="$DIR/tsa3tasker-infinityfree.zip"
 ENV_SOURCE="${ENV_SOURCE:-$DIR/env.production}"
 
@@ -13,8 +15,7 @@ if [ ! -f "$ENV_SOURCE" ]; then
 fi
 
 echo "==> Packaging lean production build for InfinityFree (tsa3.freedev.app)..."
-rm -rf "$TMP_DIR" "$OUTPUT_ZIP"
-mkdir -p "$TMP_DIR"
+rm -f "$OUTPUT_ZIP"
 
 rsync -av \
   --exclude=".*" \
@@ -45,9 +46,10 @@ fi
 # Bundle production .env
 cp "$ENV_SOURCE" "$TMP_DIR/.env"
 
-# Ensure schema export and storage directories exist
+# Ensure SQL schema export, pre-seeded SQLite fallback, and writable storage directories exist
 mkdir -p "$TMP_DIR/database"
 [ -f "$DIR/database/schema_export.sql" ] && cp "$DIR/database/schema_export.sql" "$TMP_DIR/database/schema_export.sql"
+[ -f "$DIR/database/database.sqlite" ] && cp "$DIR/database/database.sqlite" "$TMP_DIR/database/database.sqlite"
 
 mkdir -p "$TMP_DIR/storage/app/public" \
          "$TMP_DIR/storage/framework/cache/data" \
@@ -60,12 +62,11 @@ mkdir -p "$TMP_DIR/storage/app/public" \
 cd "$TMP_DIR"
 composer install --no-dev --optimize-autoloader --no-interaction --quiet
 
-# Build archive and clean staging directory
+# Build archive
 zip -r "$OUTPUT_ZIP" . -x "*.DS_Store" > /dev/null
-rm -rf "$TMP_DIR"
 
 echo "==> Verifying package contents..."
-for req in "public/index.php" "index.php" ".htaccess" "public/.htaccess" "artisan" "vendor/autoload.php" "public/assets/css/style.css" "assets/css/style.css" ".env" "database/schema_export.sql"; do
+for req in "public/index.php" "index.php" ".htaccess" "public/.htaccess" "artisan" "vendor/autoload.php" "public/assets/css/style.css" "assets/css/style.css" ".env" "database/schema_export.sql" "database/database.sqlite"; do
     if ! unzip -l "$OUTPUT_ZIP" | grep -q "$req"; then
         echo "Error: Required file $req is missing from $OUTPUT_ZIP" >&2
         exit 1

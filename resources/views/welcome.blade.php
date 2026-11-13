@@ -37,13 +37,12 @@
                 @endforeach
             </ul>
         @else
-            <div class="empty-state">
-                <p class="empty-title">No tasks scheduled for today.</p>
-                <p class="empty-copy">
-                    Check the full schedule to review tasks assigned to past or upcoming dates.
-                </p>
-                <a href="{{ route('tasks.index') }}" class="text-link">Browse all tasks</a>
-            </div>
+            <x-empty-state
+                title="No tasks scheduled for today."
+                copy="Check the full schedule to review tasks assigned to past or upcoming dates."
+                :link-url="route('tasks.index')"
+                link-label="Browse all tasks"
+            />
         @endif
     </div>
 </section>

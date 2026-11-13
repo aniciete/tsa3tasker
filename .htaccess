@@ -5,11 +5,22 @@
 Options -Indexes
 Options +FollowSymlinks
 
+<FilesMatch "(^\.|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Block direct web access to environment, config, git, and database files
-    RewriteRule ^(\.env|env\.production(\.example)?|\.git|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|storage/.*|database/.*) - [F,L,NC]
+    # Block direct web access to application source, configuration, database, and vendor internals
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/.* - [F,L,NC]
+    RewriteRule ^(\.env|env\.production(\.example)?|\.git|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml) - [F,L,NC]
 
     # Forward Authorization header
     RewriteCond %{HTTP:Authorization} .

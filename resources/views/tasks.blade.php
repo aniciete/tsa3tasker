@@ -46,13 +46,12 @@
                 </tbody>
             </table>
         @else
-            <div class="empty-state">
-                <p class="empty-title">No tasks are currently recorded.</p>
-                <p class="empty-copy">
-                    Scheduled tasks will appear here chronologically once added.
-                </p>
-                <a href="{{ route('welcome') }}" class="text-link">Return to today&rsquo;s tasks</a>
-            </div>
+            <x-empty-state
+                title="No tasks are currently recorded."
+                copy="Scheduled tasks will appear here chronologically once added."
+                :link-url="route('welcome')"
+                link-label="Return to today's tasks"
+            />
         @endif
     </div>
 </section>

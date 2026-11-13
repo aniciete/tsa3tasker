@@ -19,6 +19,11 @@ if [ -z "$FTP_PASS" ]; then
     exit 1
 fi
 
+NETRC_FILE="$(mktemp)"
+chmod 600 "$NETRC_FILE"
+trap 'rm -f "$NETRC_FILE"' EXIT
+printf 'machine %s login %s password %s\n' "$FTP_HOST" "$FTP_USER" "$FTP_PASS" > "$NETRC_FILE"
+
 if [ ! -f "$ZIP_PATH" ]; then
     echo "==> Building $ZIP_NAME..."
     chmod +x "$DIR/build-infinityfree-zip.sh"
@@ -31,17 +36,20 @@ if [ ! -f "$EXTRACT_PHP" ]; then
 fi
 
 echo "==> Testing FTP connection to $FTP_HOST:$FTP_PORT..."
-curl --connect-timeout 20 --max-time 30 -s --user "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$REMOTE_HTDOCS/" > /dev/null
+curl --connect-timeout 20 --max-time 30 -s --netrc-file "$NETRC_FILE" "ftp://$FTP_HOST:$FTP_PORT/$REMOTE_HTDOCS/" > /dev/null
 
 echo "==> Cleaning default InfinityFree placeholder index2.html if present..."
-curl -s --user "$FTP_USER:$FTP_PASS" -Q "DELE /$REMOTE_HTDOCS/index2.html" "ftp://$FTP_HOST/$REMOTE_HTDOCS/" > /dev/null 2>&1 || true
+curl -s --netrc-file "$NETRC_FILE" -Q "DELE /$REMOTE_HTDOCS/index2.html" "ftp://$FTP_HOST:$FTP_PORT/$REMOTE_HTDOCS/" > /dev/null 2>&1 || true
 
 echo "==> Uploading $ZIP_NAME..."
-curl --connect-timeout 30 --max-time 600 -T "$ZIP_PATH" --user "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$REMOTE_HTDOCS/$ZIP_NAME"
+curl --connect-timeout 30 --max-time 600 -T "$ZIP_PATH" --netrc-file "$NETRC_FILE" "ftp://$FTP_HOST:$FTP_PORT/$REMOTE_HTDOCS/$ZIP_NAME"
 
 echo "==> Uploading extract.php..."
-curl --connect-timeout 20 --max-time 60 -T "$EXTRACT_PHP" --user "$FTP_USER:$FTP_PASS" "ftp://$FTP_HOST/$REMOTE_HTDOCS/extract.php"
+curl --connect-timeout 20 --max-time 60 -T "$EXTRACT_PHP" --netrc-file "$NETRC_FILE" "ftp://$FTP_HOST:$FTP_PORT/$REMOTE_HTDOCS/extract.php"
 
 echo "==> Upload complete. Triggering $APP_URL/extract.php..."
 curl -sL "$APP_URL/extract.php"
 echo ""
+
+CLEANUP_CODE=$(curl -s -o /dev/null -w '%{http_code}' "$APP_URL/extract.php")
+echo "==> Verified extract.php cleanup HTTP status: $CLEANUP_CODE"

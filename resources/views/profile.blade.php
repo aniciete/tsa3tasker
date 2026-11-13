@@ -38,13 +38,12 @@
                 </div>
             </dl>
         @else
-            <div class="empty-state">
-                <p class="empty-title">No user profile is currently available.</p>
-                <p class="empty-copy">
-                    Account details will display here once a profile record exists.
-                </p>
-                <a href="{{ route('welcome') }}" class="text-link">Go to today&rsquo;s tasks</a>
-            </div>
+            <x-empty-state
+                title="No user profile is currently available."
+                copy="Account details will display here once a profile record exists."
+                :link-url="route('welcome')"
+                link-label="Go to today's tasks"
+            />
         @endif
     </div>
 </section>
